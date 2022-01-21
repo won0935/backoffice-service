@@ -1,0 +1,50 @@
+server:
+  shutdown: graceful
+  port: 9080
+
+app:
+  cors:
+    allowed-origins: http://localhost:3000
+
+spring:
+  application:
+    name: backoffice-service
+
+  main:
+    allow-circular-references: true
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/backoffice?serverTimezone=UTC&characterEncoding=UTF-8
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: backoffice-svc
+      password: teamwink123!
+
+keycloak:
+  auth-server-url: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/auth
+  realm: company-services
+  resource: movies-app
+  ssl-required: external
+  principal-attribute: preferred_username
+  use-resource-role-mappings: true
+
+springdoc:
+  show-actuator: true
+  swagger-ui:
+    groups-order: DESC
+    disable-swagger-default-url: true
+
+
+graphql:
+  spqr:
+    gui:
+      enabled: true
+
+
+logging:
+  config: classpath:logback-local.xml
