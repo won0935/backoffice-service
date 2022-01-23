@@ -6,7 +6,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+
 
 import static ai.alda.backoffice.config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
 
@@ -21,7 +23,7 @@ public class MallApiController {
     private final MallRecordMapper mallRecordMapper;
 
     @GetMapping
-    public CommonResponse getItems(@RequestParam String keyword) {
+    public CommonResponse getItems(@RequestParam String keyword, Pageable pageable) {
 //        var items = mallFacade.getItems(keyword);
 //        var response = mallRecordMapper.of(items);
 //        return CommonResponse.success(response);

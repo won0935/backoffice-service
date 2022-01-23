@@ -43,6 +43,8 @@ public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         http.authorizeRequests()
+                .antMatchers("/graphql", "/gui").permitAll() //graphql 엔드포인트 모든권한 오픈, 조회만 가능
+
                 .antMatchers(HttpMethod.GET, "/**").permitAll()  //기본적으로 GET 은 전부 할 수 있다.
                 .antMatchers("/**").hasAnyRole(MANAGER) //매니저만 수정할 수 있다.
 
