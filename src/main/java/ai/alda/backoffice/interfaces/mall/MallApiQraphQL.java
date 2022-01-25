@@ -3,7 +3,11 @@ package ai.alda.backoffice.interfaces.mall;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.representations.AccessToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,18 +28,8 @@ public class MallApiQraphQL {
             setName("DDD");
         }});
 
-        return temp;
-    }
+        String name = ((KeycloakPrincipal<?>) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getName();
 
-    @GraphQLQuery(name = "getAllBalance")
-    public List<LoanModel> getAll(final Pageable test) {
-
-
-        List<LoanModel> temp = new ArrayList<>();
-        temp.add(new LoanModel() {{
-            setId(1L);
-            setName("DDD");
-        }});
 
         return temp;
     }
