@@ -1,92 +1,36 @@
 package ai.alda.backoffice.interfaces.mall;
 
+import ai.alda.backoffice.application.mall.MallFacade;
+import ai.alda.backoffice.common.response.ResultResponse;
+import ai.alda.backoffice.common.util.PageContents;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import lombok.RequiredArgsConstructor;
-import org.keycloak.KeycloakPrincipal;
-import org.keycloak.KeycloakSecurityContext;
-import org.keycloak.representations.AccessToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Service
+@Log4j2
 @GraphQLApi
+@Service
 @RequiredArgsConstructor
 public class MallApiQraphQL {
 
-
-    @GraphQLQuery(name = "loans")
-    public List<LoanModel> getLoans() {
-
-        List<LoanModel> temp = new ArrayList<>();
-        temp.add(new LoanModel() {{
-            setId(1L);
-            setName("DDD");
-        }});
-
-        String name = ((KeycloakPrincipal<?>) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getName();
+    private final MallFacade mallFacade;
+    private final MallRecordMapper mapper;
 
 
-        return temp;
+    @GraphQLQuery(name = "getLoanList", description = "상품몰 상품 리스트 조회")
+    public ResultResponse<PageContents<MallDto.Loan>> getLoanList(MallDto.SearchLoanRequest loanSearchRequest) {
+        var request = mapper.of(loanSearchRequest);
+        var value = mallFacade.getLoanList(request);
+        var response = mapper.of(value);
+        return new ResultResponse(response);
     }
 
-    //{
-    //	post(id:1){
-    //		id
-    //		title
-    //	}
-    //}
-//    @GraphQLQuery(name = "loan")
-//    public LoanModel getLoanById(Long id) {
-//        return testClient.getLoanById(id);
-//    }
-
-    //    mutation{
-//        saveLoan(post:
-//        {
-//            id: 343
-//            name :"sss",
-//            loanTagList:[
-//               {
-//                        type: "test1",
-//                        description :"xxx"
-//                }
-//                {
-//                        type: "test2",
-//                        description :"yyy"
-//                }
-//                {
-//                        type: "test3",
-//                        description :"zzz"
-//                }
-//            ]
-//        })
-//    }
-//    @GraphQLMutation(name = "saveLoan")
-//    public void saveLoan(String post) {
-//    }
-
-    //mutation{
-    //	deletePost(id:1)
-    //}
-//    @GraphQLMutation(name = "deleteLoan")
-//    public void deleteLoan(Long id) {
-//        testClient.deleteLoan(id);
-//    }
-
-    //{
-    //	posts{
-    //		title
-    //		isGood
-    //	}
-    //}
-//    @Transactional
-//    @GraphQLQuery(name = "isGood")
-//    public boolean isGood(@GraphQLContext LoanModel entity) {
-//        return !entity.getName().equals("title1");
-//    }
+    @GraphQLQuery(name = "getLoan", description = "상품몰 상품 단건 조회")
+    public ResultResponse<PageContents<MallDto.Loan>> getLoan(Long id) {
+        var value = mallFacade.getLoan(id);
+        var response = mapper.of(value);
+        return new ResultResponse(response);
+    }
 }

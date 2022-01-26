@@ -1,8 +1,9 @@
 package ai.alda.backoffice.interfaces.mall;
 
+import ai.alda.backoffice.common.util.PageContents;
+import ai.alda.backoffice.domain.mall.MallCommand;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(
@@ -12,7 +13,7 @@ import org.mapstruct.ReportingPolicy;
 )
 public interface MallRecordMapper {
 
-//    // register
+    // register
 //    @Mappings({@Mapping(source = "request.itemOptionGroupList", target = "itemOptionGroupRequestList")})
 //    MallCommand.RegisterItemRequest of(MallDto.RegisterItemRequest request);
 //
@@ -28,8 +29,11 @@ public interface MallRecordMapper {
 //
 //    MallDto.ItemOptionGroupInfo of(MallInfo.ItemOptionGroupInfo itemOptionGroup);
 //
-//    MallDto.ItemOptionInfo of(MallInfo.ItemOptionInfo itemOption);
+    MallCommand.SearchLoanRequest of(MallDto.SearchLoanRequest request);
 
+    MallCommand.Loan of(MallDto.Loan request);
 
-//    MallRecord.LoanSearchRequest of (MallRecord.LoanSearchRequest request);
+    PageContents<MallDto.Loan> of(PageContents<MallCommand.Loan> info);
+
+    MallDto.Loan of(MallCommand.Loan request);
 }
